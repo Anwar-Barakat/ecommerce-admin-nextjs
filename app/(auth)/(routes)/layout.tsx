@@ -1,13 +1,12 @@
-interface SetupLayoutProps {
+interface AuthLayoutProps {
     children: React.ReactNode;
 }
 
-const SetupLayout = ({ children }: SetupLayoutProps
 
-) => {
+const AuthLayout = ({ children }: AuthLayoutProps) => {
     return (<div className="flex items-center justify-center h-full">
         {children}
     </div>);
 }
 
-export default SetupLayout;
+export default AuthLayout;
