@@ -75,8 +75,8 @@ export const StoreModal = () => {
                         />
 
                         <div className="flex items-center justify-end w-full mt-4 gap-1 space-x-2">
-                            <Button variant="outline">Cancel</Button>
-                            <Button type="submit"  loading={isLoading}>
+                            <Button disabled={isLoading} type="button"  variant="outline">Cancel</Button>
+                            <Button type="submit"  disabled={isLoading}>
                                 Create store
                             </Button>
                         </div>
