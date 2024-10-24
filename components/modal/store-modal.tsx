@@ -5,6 +5,7 @@ import { z } from "zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 
 import Modal from "@/components/modal";
 import {
@@ -39,7 +40,15 @@ export const StoreModal = () => {
         setIsLoading(true);
         try {
             console.log(values);
-            // Handle form submission (e.g., send data to an API)
+            setIsLoading(true);
+
+            const response = await axios.post("/api/stores", values);
+
+            console.log(response.data);
+
+        } catch (error) {
+            console.error(error);
+
         } finally {
             setIsLoading(false);
         }
@@ -75,8 +84,8 @@ export const StoreModal = () => {
                         />
 
                         <div className="flex items-center justify-end w-full mt-4 gap-1 space-x-2">
-                            <Button disabled={isLoading} type="button"  variant="outline">Cancel</Button>
-                            <Button type="submit"  disabled={isLoading}>
+                            <Button disabled={isLoading} type="button" variant="outline">Cancel</Button>
+                            <Button type="submit" disabled={isLoading}>
                                 Create store
                             </Button>
                         </div>
