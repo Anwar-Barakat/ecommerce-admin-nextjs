@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button"; // Assuming you're using Shadcn's Button
+import toast from "react-hot-toast";
 
 // Form validation schema using zod
 const formSchema = z.object({
@@ -44,10 +45,15 @@ export const StoreModal = () => {
 
             const response = await axios.post("/api/stores", values);
 
-            console.log(response.data);
+            if (response.status === 201) {
+                toast.success("Store created successfully");
+                storeModal.onClose();
+            } else {
+                toast.error("An error occurred while creating the store");
+            }
 
         } catch (error) {
-            console.error(error);
+            toast.error("An error occurred while creating the store, " + error);
 
         } finally {
             setIsLoading(false);
