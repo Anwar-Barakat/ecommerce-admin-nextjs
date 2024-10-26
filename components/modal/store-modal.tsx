@@ -48,6 +48,7 @@ export const StoreModal = () => {
             if (response.status === 201) {
                 toast.success("Store created successfully");
                 storeModal.onClose();
+                window.location.assign(`/dashboard/${response.data.id}`);
             } else {
                 toast.error("An error occurred while creating the store");
             }
