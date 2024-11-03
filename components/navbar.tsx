@@ -27,7 +27,7 @@ const Navbar = async () => {
 
     return (
         <div className='border-b'>
-            <div className='flex h-16 items-center'>
+            <div className='flex h-16 items-center container m-auto'>
                 <StoreSwitcher item={stores} />
 
                 <MainNav />

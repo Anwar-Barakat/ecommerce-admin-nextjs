@@ -67,32 +67,48 @@ const StoreSwitcher = ({ item }: StoreSwitcherProps) => {
                     aria-expanded={open}
                     className="w-[200px] justify-between"
                 >
-                    <StoreIcon className="h-4 w-4 shrink-0" />
-                    {currentStore ? currentStore.label : "Select Store..."}
+                    <StoreIcon className="h-4 w-4" />
+                    {
+                        currentStore?.value ?
+                            formattedStores?.find((formattedStore) => formattedStore?.value === currentStore?.value)?.label :
+                            "Select store ..."
+                    }
                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                 </Button>
             </PopoverTrigger>
             <PopoverContent className="w-[200px] p-0">
                 <Command>
-                    <div className="w-full px-2 py-1 flex items-center border rounded-md border-gray-100">
-                        <StoreIcon className="h-4 w-4 shrink-0" />
-                        <CommandInput
-                            placeholder="Search store..."
-                            onChange={handleSearchTerm}
-                            className="flex-1 w-full outline-none"
-                        />
+                    <div className="w-full px-2 py-1 flex gap-1 items-center border border-gray-100">
+                        <StoreIcon className="h-4 w-4 min-w-4" />
+                        <input type="text" placeholder="Search store" className="flex-1 w-full outline-none text-md"
+                            onChange={handleSearchTerm} />
                     </div>
                     <CommandList>
                         <CommandGroup heading="Stores">
                             {
-                                (searchTerm === '' ? formattedStores : filteredStores).map((store) => (
-                                    <StoreListItem
-                                        key={store.value}
-                                        store={store}
-                                        onSelect={onStoreSelect}
-                                        isChecked={currentStore?.value === store.value}
-                                    />
-                                ))
+                                searchTerm === "" ? (
+                                    formattedStores.map((item) => (
+                                        <StoreListItem
+                                            key={item.value}
+                                            store={item}
+                                            onSelect={onStoreSelect}
+                                            isChecked={currentStore?.value === item.value}
+                                        />
+                                    ))
+                                ) : filteredStores.length > 0 ? (
+                                    filteredStores.map((item) => (
+                                        <StoreListItem
+                                            key={item.value}
+                                            store={item}
+                                            onSelect={onStoreSelect}
+                                            isChecked={currentStore?.value === item.value}
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="px-2 py-1 text-sm text-gray-500">
+                                        No store found
+                                    </div>
+                                )
                             }
                         </CommandGroup>
                     </CommandList>

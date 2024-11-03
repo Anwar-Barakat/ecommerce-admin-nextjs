@@ -13,7 +13,7 @@ const StoreListItem = ({ store, onSelect, isChecked }: StoreListItemProps) => {
     
     return (
         <div
-            className="flex items-center gap-2 px-2 py-1 cursor-pointer hover:bg-gray-50 text-muted-foreground hover:text-primary"
+            className="flex items-center gap-2 px-2 py-1 cursor-pointer hover:bg-gray-50 text-muted-foreground hover:text-primary rounded-none"
             onClick={() => onSelect(store)}
             data-store-list-item
             aria-selected={isChecked}
