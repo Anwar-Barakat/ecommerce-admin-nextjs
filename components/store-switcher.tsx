@@ -17,6 +17,9 @@ import {
 } from "@/components/ui/popover";
 import { ChevronsUpDown, StoreIcon } from "lucide-react";
 import StoreListItem from "./store-list-items";
+import { CommandSeparator } from "cmdk";
+import { useStoreModal } from "@/hooks/use-store-modal";
+import CreateStoreItem from "./create-store-item";
 
 type PopoverTriggerProps = React.ComponentProps<typeof PopoverTrigger>;
 
@@ -27,6 +30,7 @@ interface StoreSwitcherProps extends PopoverTriggerProps {
 const StoreSwitcher = ({ item }: StoreSwitcherProps) => {
     const params = useParams();
     const router = useRouter();
+    const storeModal = useStoreModal();
 
     const [searchTerm, setSearchTerm] = React.useState("");
     const [filteredStores, setFilteredStores] = React.useState<{ label: string, value: string }[]>([]);
@@ -110,6 +114,17 @@ const StoreSwitcher = ({ item }: StoreSwitcherProps) => {
                                     </div>
                                 )
                             }
+                        </CommandGroup>
+                    </CommandList>
+                    <CommandSeparator />
+                    <CommandList>
+                        <CommandGroup>
+                            <CreateStoreItem
+                                onClick={() => {
+                                    setOpen(false);
+                                    storeModal.onOpen();
+                                }}
+                            />
                         </CommandGroup>
                     </CommandList>
                 </Command>
