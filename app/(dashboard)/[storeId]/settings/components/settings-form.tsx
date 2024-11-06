@@ -14,6 +14,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { AlertModal } from "@/components/modal/alert-modal";
 
 interface SettingsFormProps {
     initialData: Store;
@@ -23,9 +24,9 @@ const formSchema = z.object({
     name: z.string().min(3, { message: "Store name must be at least 3 characters" }),
 });
 
-export const SettingsForm = (
-    { initialData }: SettingsFormProps
-) => {
+export const SettingsForm = ({ initialData }: SettingsFormProps) => {
+
+    const [isOpen, setIsOpen] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -53,12 +54,40 @@ export const SettingsForm = (
         }
     }
 
+    const onDelete = async () => {  
+        setIsLoading(true);
+        try {
+            await axios.delete(`/api/stores/${params.storeId}`);
+            toast.success("Store deleted successfully");
+            router.refresh();
+            router.push("/");
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                toast.error(`Delete failed: ${error.response?.data || error.message}`);
+            } else {
+                toast.error("An unexpected error occurred.");
+            }
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
     return (
         <>
+            <AlertModal
+                isOpen={isOpen}
+                onClose={() => setIsOpen(false)}
+                onConfirm={onDelete}
+                loading={isLoading}
+                
+            />
             <div className="flex items-center justify-center">
                 <Heading title="Settings" description="Manage Store Preferences" />
-                <Button variant={"destructive"} size={"icon"} onClick={() => { }}>
-                    <Trash className="w-4 h-4" />
+                <Button variant={"destructive"} size={"icon"} onClick={() => {
+                    setIsOpen(true);
+                }}>
+                    <Trash className="w-4 h-4"
+                    />
                 </Button>
             </div>
             <Separator className="my-4" />
@@ -84,7 +113,9 @@ export const SettingsForm = (
                         />
                     </div>
 
-                    <Button type="submit" disabled={isLoading} className="w-fit">
+                    <Button type="submit" disabled={isLoading} className="w-fit"
+
+                    >
                         Save Changes
                     </Button>
                 </form>
