@@ -1,6 +1,12 @@
 import { db } from "@/lib/firebase";
 import { auth } from "@clerk/nextjs/server";
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request, res: Response) => {
@@ -33,7 +39,7 @@ export const POST = async (req: Request, res: Response) => {
       ...storeData,
       id,
       updatedAt: serverTimestamp(),
-    }); 
+    });
 
     return new NextResponse(JSON.stringify({ id: storeRef.id, ...storeData }), {
       status: 201,

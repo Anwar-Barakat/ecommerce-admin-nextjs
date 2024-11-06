@@ -43,9 +43,9 @@ const DashboardLayout = async ({ children, params }: DashboardLayoutProps) => {
     return (
         <div>
             <Navbar />
-            <h1>Dashboard Layout</h1>
-            <p>Store ID: {params.storeId}</p>
-            {children}
+            <div className="flex items-center container m-auto">
+                {children}
+            </div>
         </div>
     );
 }
