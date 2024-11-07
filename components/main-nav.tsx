@@ -14,6 +14,11 @@ const MainNav = (
 
     const routes = [
         {
+            href: `/${param.storeId}`,
+            label: "Overview",
+            active: pathname === `/${param.storeId}`,
+        },
+        {
             href: `/${param.storeId}/settings`,
             label: "Settings",
             active: pathname === `/${param.storeId}/settings`,
@@ -25,7 +30,7 @@ const MainNav = (
         <nav className={cn('flex items-center space-x-4 lg:space-x-6 pl-6', className)} {...props}>
             {routes.map((route) => (
                 <Link
-                    
+
                     key={route.href}
                     href={route.href}
                     className={cn(

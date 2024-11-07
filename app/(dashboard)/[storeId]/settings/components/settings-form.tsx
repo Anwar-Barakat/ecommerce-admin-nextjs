@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modal/alert-modal";
+import ApiAlert from "@/components/api-alert";
 
 interface SettingsFormProps {
     initialData: Store;
@@ -120,6 +121,12 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
                     </Button>
                 </form>
             </Form>
+            <Separator className="my-4" />
+            <ApiAlert
+                title="API Key"
+                description="Your API key is a secret token used to authenticate with the API."
+                variant="public"
+            />
         </>
     );
 }
