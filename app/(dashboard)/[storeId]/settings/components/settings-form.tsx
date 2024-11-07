@@ -16,6 +16,7 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modal/alert-modal";
 import ApiAlert from "@/components/api-alert";
+import { useOrigin } from "@/hooks/use-origin";
 
 interface SettingsFormProps {
     initialData: Store;
@@ -37,6 +38,7 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
     const [isLoading, setIsLoading] = useState(false);
     const params = useParams();
     const router = useRouter();
+    const origin = useOrigin();
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true);
@@ -123,8 +125,8 @@ export const SettingsForm = ({ initialData }: SettingsFormProps) => {
             </Form>
             <Separator className="my-4" />
             <ApiAlert
-                title="API Key"
-                description="Your API key is a secret token used to authenticate with the API."
+                title="NEXT_PUBLIC_API_KEY"
+                description={`${origin}/api/${params.storeId}`}
                 variant="public"
             />
         </>
