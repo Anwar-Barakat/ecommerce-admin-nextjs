@@ -1,11 +1,13 @@
 "use client";
 
 import { storage } from '@/lib/firebase';
-import { getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
+import { deleteObject, getDownloadURL, ref, uploadBytesResumable } from 'firebase/storage';
 import { ImagePlus, Trash } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { PuffLoader } from 'react-spinners';
 import Image from 'next/image';
+import toast from 'react-hot-toast';
+import { Button } from './ui/button';
 
 interface ImageUploadProps {
     disabled?: boolean;
@@ -54,6 +56,13 @@ export const ImageUpload = ({ disabled, onChange, onRemove, value }: ImageUpload
         }
     };
 
+    const handleRemove = (url: string) => {
+        onRemove(url);
+        deleteObject(ref(storage, url)).then(() => {
+            toast.success('Image deleted successfully.');
+        })
+    }
+
     return (
         <div className="image-upload-container">
             {value && value.length > 0 ? (
@@ -66,12 +75,15 @@ export const ImageUpload = ({ disabled, onChange, onRemove, value }: ImageUpload
                         className="object-cover w-full h-full"
                         
                     />
-                    <button
-                        onClick={() => onRemove(value[0])}
-                        className="absolute top-2 right-2 bg-white p-1 rounded-full shadow-md hover:bg-red-500 hover:text-white"
+                    <Button
+                        onClick={() => handleRemove(value[0])}
+                        disabled={disabled || isLoading}
+                        variant={`destructive`}
+                        className="absolute top-2 right-2 bg-white p-1 rounded-sm shadow-md hover:bg-red-500 hover:text-white text-black w-8 h-8"
+                        
                     >
                         <Trash className="w-4 h-4" />
-                    </button>
+                    </Button>
                 </div>
             ) : (
                 <div className="w-52 h-52 rounded-md overflow-hidden border border-dashed border-gray-200 flex items-center justify-center flex-col gap-3">
