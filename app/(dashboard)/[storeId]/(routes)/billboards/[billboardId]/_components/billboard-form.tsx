@@ -46,9 +46,14 @@ export const BillboardForm = ({ initialData }: SettingsFormProps) => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true);
         try {
-            await axios.patch(`/api/stores/${params.storeId}`, values);
-            toast.success("Store updated successfully");
+            if (initialData) {
+                await axios.put(`/api/${params.storeId}/billboards/${initialData.id}`, values);
+            } else {
+                await axios.post(`/api/${params.storeId}/billboards`, values);
+            }
+            toast.success(toastMessage);
             router.refresh();
+            router.push(`/${params.storeId}/billboards`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 toast.error(`Update failed: ${error.response?.data || error.message}`);
