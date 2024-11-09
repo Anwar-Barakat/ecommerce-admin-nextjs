@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table"
 import { CellImage } from "./cell-image"
 import { Button } from "@/components/ui/button"
 import { ArrowUpDown } from "lucide-react"
+import { CellAction } from "./cell-action"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -56,7 +57,6 @@ export const columns: ColumnDef<BillboardColumns>[] = [
     {
         accessorKey: "id",
         header: "Actions",
-        cell: ({ row }) => <CellActions row={row} />,
-        }
+        cell: ({ row }) => <CellAction data={row.original} />
     }
 ]
