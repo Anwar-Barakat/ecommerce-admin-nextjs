@@ -54,7 +54,6 @@ export const BillboardForm = ({ initialData }: SettingsFormProps) => {
                 await axios.post(`/api/${params.storeId}/billboards`, values);
             }
             toast.success(toastMessage);
-            router.refresh();
             router.push(`/${params.storeId}/billboards`);
         } catch (error) {
             if (axios.isAxiosError(error)) {
@@ -63,6 +62,7 @@ export const BillboardForm = ({ initialData }: SettingsFormProps) => {
                 toast.error("An unexpected error occurred.");
             }
         } finally {
+            router.refresh();
             setIsLoading(false);
         }
     }
