@@ -16,6 +16,8 @@ import toast from "react-hot-toast";
 import { AlertModal } from "@/components/modal/alert-modal";
 import { Billboard } from "@/app/models/billboard";
 import { ImageUpload } from "@/components/image-upload";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "@/lib/firebase";
 
 interface SettingsFormProps {
     initialData: Billboard;
@@ -47,7 +49,7 @@ export const BillboardForm = ({ initialData }: SettingsFormProps) => {
         setIsLoading(true);
         try {
             if (initialData) {
-                await axios.put(`/api/${params.storeId}/billboards/${initialData.id}`, values);
+                await axios.patch(`/api/${params.storeId}/billboards/${params.billboardId}`, values);
             } else {
                 await axios.post(`/api/${params.storeId}/billboards`, values);
             }
@@ -66,10 +68,14 @@ export const BillboardForm = ({ initialData }: SettingsFormProps) => {
     }
 
     const onDelete = async () => {
-        setIsLoading(true);
         try {
-            await axios.delete(`/api/stores/${params.storeId}`);
-            toast.success("Store deleted successfully");
+            setIsLoading(true);
+            const { imageUrl } = form.getValues();
+            if (imageUrl) {
+                await deleteObject(ref(storage, imageUrl));
+            }
+            await axios.delete(`/api/${params.storeId}/billboards/${params.billboardId}`);
+            toast.success("Billboard deleted successfully");
             router.refresh();
             router.push("/");
         } catch (error) {
