@@ -1,6 +1,5 @@
 "use client";
 
-import { Billboard } from "@/app/models/billboard";
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
@@ -29,7 +28,7 @@ const BillboardClient = (
                 </Button>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <DataTable columns={columns} data={data} />
+            <DataTable columns={columns} data={data} searchKey="label"/>
         </div>
     )
 }
