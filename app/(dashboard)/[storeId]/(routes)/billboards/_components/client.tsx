@@ -21,7 +21,9 @@ const BillboardClient = (
     return (
         <div className="flex-col w-full">
             <div className="flex items-center justify-between w-full">
-                <Heading title={`Billboards `} description="Manage Billboards for your store" />
+                <Heading
+                    title={`Billboards ${data.length > 0 ? `(${data.length})` : ""}`}
+                    description="Manage Billboards for your store" />
                 <Button onClick={() => router.push(`/${params.storeId}/billboards/create`)}>
                     <Plus className="w-4 h-4" />
                     Add New
