@@ -136,8 +136,8 @@ export const DELETE = async (
     }
 
     await deleteDoc(doc(db, "stores", storeId, "billboards", billboardId));
-    
 
+    return new NextResponse("Billboard deleted successfully", { status: 200 });
   } catch (error) {
     console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
