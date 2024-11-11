@@ -7,6 +7,7 @@ import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { BillboardColumns, columns } from "./columns";
+import { APIList } from "../../categories/_components/api-list";
 
 interface BillboardClientProps {
     data: BillboardColumns[]
@@ -30,7 +31,16 @@ const BillboardClient = (
                 </Button>
             </div>
             <Separator orientation="horizontal" className="my-4" />
-            <DataTable columns={columns} data={data} searchKey="label"/>
+            <DataTable columns={columns} data={data} searchKey="label" />
+
+            <Separator className="my-4" />
+            <Heading title="API" description="API Calls for Billboards" />
+            <Separator className="my-4" />
+
+            <APIList
+                entityName="billboards"
+                entityNameId="billboardId"
+            />
         </div>
     )
 }
