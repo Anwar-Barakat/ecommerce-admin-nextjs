@@ -30,15 +30,20 @@ export const PATCH = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { label, imageUrl } = body;
+    const { name, billboardId, billboardLabel } = body;
 
-    if (!label) {
-      return new NextResponse("Label is required", { status: 400 });
+    if (!name) {
+      return new NextResponse("Name is required", { status: 400 });
     }
 
-    if (!imageUrl) {
-      return new NextResponse("Image URL is required", { status: 400 });
+    if (!billboardId) {
+      return new NextResponse("Billboard ID is required", { status: 400 });
     }
+
+    if (!billboardLabel) {
+      return new NextResponse("Billboard Label is required", { status: 400 });
+    }
+
 
     if (!params.storeId) {
       return new NextResponse("Store ID is required", { status: 400 });
@@ -70,8 +75,9 @@ export const PATCH = async (
 
     await updateDoc(doc(db, "stores", storeId, "categories", categoryId), {
       ...categoryRef.data(),
-      label,
-      imageUrl,
+      name,
+      billboardId,
+      billboardLabel,
       updatedAt: serverTimestamp(),
     });
 

@@ -45,7 +45,7 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { name, billboardId } = body;
+    const { name, billboardId, billboardLabel } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
@@ -53,6 +53,10 @@ export const POST = async (
 
     if (!billboardId) {
       return new NextResponse("Billboard ID is required", { status: 400 });
+    }
+
+    if (!billboardLabel) {
+      return new NextResponse("Billboard Label is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -73,6 +77,7 @@ export const POST = async (
     const categoryData = {
       name,
       billboardId,
+      billboardLabel,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
