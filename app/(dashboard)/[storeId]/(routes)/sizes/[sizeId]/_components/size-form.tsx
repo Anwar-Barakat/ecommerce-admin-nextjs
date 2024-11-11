@@ -25,7 +25,7 @@ const formSchema = z.object({
     value: z.string().min(1),
 });
 
-export const CategoryForm = ({ initialData }: SizeFormProps) => {
+export const SizeForm = ({ initialData }: SizeFormProps) => {
 
     const [isOpen, setIsOpen] = useState(false);
 
@@ -47,7 +47,7 @@ export const CategoryForm = ({ initialData }: SizeFormProps) => {
         try {
 
             if (initialData) {
-                await axios.patch(`/api/${params.storeId}/sizes/${params.categoryId}`, {
+                await axios.patch(`/api/${params.storeId}/sizes/${params.sizeId}`, {
                     ...values,
                 });
             } else {
@@ -72,8 +72,8 @@ export const CategoryForm = ({ initialData }: SizeFormProps) => {
     const onDelete = async () => {
         try {
             setIsLoading(true);
-            await axios.delete(`/api/${params.storeId}/sizes/${params.categoryId}`);
-            toast.success("Category deleted successfully");
+            await axios.delete(`/api/${params.storeId}/sizes/${params.sizeId}`);
+            toast.success("Size deleted successfully");
             router.refresh();
             router.push("/");
         } catch (error) {

@@ -45,7 +45,7 @@ export const CellAction = (
             // After successful deletion, delete the size from your database
             await axios.delete(`/api/${params.storeId}/sizes/${data.id}`);
 
-            toast.success('Category deleted');
+            toast.success('Size deleted');
             router.push(`/${params.storeId}/sizes`);
         } catch (error) {
             console.error("Deletion Error:", error); // Log the error for debugging
