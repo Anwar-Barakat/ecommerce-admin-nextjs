@@ -30,10 +30,10 @@ const ApiAlert: React.FC<ApiAlertProps> = ({ title, description, variant }) => {
     }
 
     return (
-        <Alert className="flex items-center gap-3">
-            <div><Server className={``} size={24} /></div>
+        <Alert className="flex items-start gap-3">
+            <div><Server className={``} size={16} /></div>
             <div className="flex flex-col gap-1 w-full">
-                <AlertTitle className={`${textMap[variant]} flex items-center`}>
+                <AlertTitle className={`${textMap[variant]} flex items-start`}>
                     {title} 
                     {variant === "admin" && (
                         <Badge variant={variantMap[variant]} className="ml-2">Admin</Badge>
