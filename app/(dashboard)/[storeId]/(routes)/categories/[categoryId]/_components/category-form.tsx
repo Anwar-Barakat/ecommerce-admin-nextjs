@@ -62,7 +62,10 @@ export const CategoryForm = ({ initialData, billboards }: CategoryFormProps) => 
             const matchedBillboard = billboards.find((billboard) => billboard.id === billboardId);
 
             if (initialData) {
-                await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, values);
+                await axios.patch(`/api/${params.storeId}/categories/${params.categoryId}`, {
+                    ...values,
+                    billboardLabel: matchedBillboard?.label,
+                });
             } else {
                 await axios.post(`/api/${params.storeId}/categories`, {
                     ...values,

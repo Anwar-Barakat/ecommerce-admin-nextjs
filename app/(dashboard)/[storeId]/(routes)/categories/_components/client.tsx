@@ -3,10 +3,11 @@
 import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/ui/data-table";
-import { Separator } from "@radix-ui/react-separator";
+import { Separator } from "@/components/ui/separator";
 import { Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { CategoryColumns, columns } from "./columns";
+import { APIList } from "./api-list";
 
 interface CategoryClientProps {
     data: CategoryColumns[]
@@ -29,8 +30,17 @@ const CategoryClient = (
                     Add New
                 </Button>
             </div>
-            <Separator orientation="horizontal" className="my-4" />
-            <DataTable columns={columns} data={data} searchKey="name"/>
+            <Separator className="my-4" />
+            <DataTable columns={columns} data={data} searchKey="name" />
+
+            <Separator className="my-4" />
+            <Heading title="API" description="API Calls for Categories" />
+            <Separator className="my-4" />
+
+            <APIList
+                entityName="categories"
+                entityNameId="categoryId"
+            />
         </div>
     )
 }

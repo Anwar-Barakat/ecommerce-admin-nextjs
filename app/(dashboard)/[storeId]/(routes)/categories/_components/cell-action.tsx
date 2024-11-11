@@ -35,7 +35,7 @@ export const CellAction = (
     }
 
     const handleEditAction = () => {
-        router.push(`/${params.storeId}/billboards/${data.id}`);
+        router.push(`/${params.storeId}/categories/${data.id}`);
     }
 
     const handleDeleteAction = async () => {
@@ -43,10 +43,10 @@ export const CellAction = (
             setIsLoading(true);
 
             // After successful deletion, delete the billboard from your database
-            await axios.delete(`/api/${params.storeId}/billboards/${data.id}`);
+            await axios.delete(`/api/${params.storeId}/categories/${data.id}`);
 
-            toast.success('Billboard deleted');
-            router.push(`/${params.storeId}/billboards`);
+            toast.success('Category deleted');
+            router.push(`/${params.storeId}/categories`);
         } catch (error) {
             console.error("Deletion Error:", error); // Log the error for debugging
             toast.error('Failed to delete billboard');
