@@ -45,6 +45,7 @@ export const KitchenForm = ({ initialData }: KitchenFormProps) => {
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         setIsLoading(true);
         try {
+            
             if (initialData) {
                 await axios.patch(`/api/${params.storeId}/kitchens/${params.kitchenId}`, {
                     ...values,

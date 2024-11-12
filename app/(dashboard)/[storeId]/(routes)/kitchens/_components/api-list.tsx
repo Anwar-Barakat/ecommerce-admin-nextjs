@@ -2,7 +2,7 @@
 
 import ApiAlert from "@/components/api-alert";
 import { useOrigin } from "@/hooks/use-origin";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 interface APIListProps {
     entityName: string
@@ -15,6 +15,7 @@ export const APIList = (
 
     const params = useParams();
     const origin = useOrigin();
+    const router = useRouter();
 
     const baseUrl = `${origin}/api/${params.storeId}`;
 

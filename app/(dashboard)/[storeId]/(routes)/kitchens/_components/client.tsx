@@ -19,6 +19,7 @@ const KitchenClient = (
 ) => {
     const params = useParams();
     const router = useRouter();
+    
     return (
         <div className="flex-col w-full">
             <div className="flex items-center justify-between w-full">
