@@ -31,101 +31,100 @@ export const ImagesUpload = ({ disabled, onChange, onRemove, value }: ImagesUplo
         const files: File[] = Array.from(e.target.files || []);
         if (files.length === 0) return;
         setIsLoading(true);
-        const newArray: string[] = [];
-        let counterUploader = 0;
-    
-        for (const file of files) {
+        const newUrls: string[] = [];
+        let completeUploader = 0;
+        files.forEach((file: File) => {
             const uploadTask = uploadBytesResumable(
                 ref(storage, `images/${Date.now()}-${file.name}`),
                 file,
-                {
-                    contentType: file.type,
-                }
+                { contentType: file.type }
             );
-    
-            uploadTask.on(
-                'state_changed',
+
+            uploadTask.on('state_changed',
                 (snapshot) => {
-                    setProgress((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    setProgress(progress);
                 },
                 (error) => {
                     console.error('Error uploading image:', error);
                     toast.error('Failed to upload image');
                 },
-                async () => {
-                    const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
-                    newArray.push(downloadURL);
-                    counterUploader += 1;
-                    if (counterUploader === files.length) {
-                        setIsLoading(false);
-                        onChange(newArray);
-                    }
+                () => {
+                    getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+                        newUrls.push(downloadURL);
+                        completeUploader++;
+                        if (completeUploader === files.length) {
+                            setIsLoading(false);
+                            onChange([...value, ...newUrls]);
+                            toast.success('Images uploaded');
+                        }
+                    });
                 }
             );
-        }
+        });
     };
 
     const handleRemove = (url: string) => {
-        const newValue = value.filter((imageURL) => imageURL !== url);
+        const newValue = value.filter((imageUrl) => imageUrl !== url);
         onRemove(url);
         onChange(newValue);
-        deleteObject(ref(storage, `images/${url}`))
-            .then(() => {
-                toast.success('Image deleted');
-            })
-            .catch((error) => {
-                console.error('Error deleting image:', error);
-                toast.error('Failed to delete image');
-            });
+        deleteObject(ref(storage, url)).then(() => {
+            toast.success('Image removed');
+        }).catch((error) => {
+            console.error('Error removing image:', error);
+            toast.error('Failed to remove image');
+        });
     }
 
     return (
         <div className="image-upload-container">
-            {value && value.length > 0 ? (
-                <div className="uploaded-image-preview w-52 h-52 rounded-md overflow-hidden border border-gray-200 relative">
-                    <Image
-                        src={value[0]}
-                        alt="Uploaded preview"
-                        width={208} // equivalent to 52 * 4 in Tailwind (w-52)
-                        height={208}
-                        className="object-cover w-full h-full"
-
-                    />
-                    <Button
-                        onClick={() => handleRemove(value[0])}
-                        disabled={disabled || isLoading}
-                        variant={`destructive`}
-                        className="absolute top-2 right-2 bg-white p-1 rounded-sm shadow-md hover:bg-red-500 hover:text-white text-black w-8 h-8"
-
-                    >
-                        <Trash className="w-4 h-4" />
-                    </Button>
-                </div>
-            ) : (
-                <div className="w-52 h-52 rounded-md overflow-hidden border border-dashed border-gray-200 flex items-center justify-center flex-col gap-3">
-                    {isLoading ? (
-                        <div className="loader-container">
-                            <PuffLoader size={30} color="#555" />
-                            <p>{`${progress.toFixed(2)}%`}</p>
-                        </div>
-                    ) : (
-                        <label>
-                            <div className="w-full h-full flex flex-col gap-2 items-center cursor-pointer">
-                                <ImagePlus className="w-8 h-8" />
-                                <p>Upload images</p>
-                            </div>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleUpload}
-                                className="hidden"
-                                disabled={disabled || isLoading}
-                                multiple
+            <div className="grid grid-cols-3 gap-4">
+                {value && value.length > 0 ? (
+                    value.map((imageUrl, index) => (
+                        <div key={index} className="uploaded-image-preview w-52 h-52 rounded-md overflow-hidden border border-gray-200 relative">
+                            <Image
+                                src={imageUrl}
+                                alt={`Uploaded preview ${index + 1}`}
+                                width={208}
+                                height={208}
+                                className="object-cover w-full h-full"
                             />
-                        </label>
-                    )}
-                </div>
-            )}
+                            <Button
+                                onClick={() => handleRemove(imageUrl)}
+                                disabled={disabled || isLoading}
+                                variant="destructive"
+                                className="absolute top-2 right-2 bg-white p-1 rounded-sm shadow-md hover:bg-red-500 hover:text-white text-black w-8 h-8"
+                            >
+                                <Trash className="w-4 h-4" />
+                            </Button>
+                        </div>
+                    ))
+                ) : (
+                    <div className="w-52 h-52 rounded-md overflow-hidden border border-dashed border-gray-200 flex items-center justify-center flex-col gap-3">
+                        {isLoading ? (
+                            <div className="loader-container">
+                                <PuffLoader size={30} color="#555" />
+                                <p>{`${progress.toFixed(2)}%`}</p>
+                            </div>
+                        ) : (
+                            <label>
+                                <div className="w-full h-full flex flex-col gap-2 items-center cursor-pointer">
+                                    <ImagePlus className="w-8 h-8" />
+                                    <p>Upload images</p>
+                                </div>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleUpload}
+                                    className="hidden"
+                                    disabled={disabled || isLoading}
+                                    multiple
+                                />
+                            </label>
+                        )}
+                    </div>
+                )}
+            </div>
         </div>
     );
 };

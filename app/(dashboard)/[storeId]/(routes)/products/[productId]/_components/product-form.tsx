@@ -56,7 +56,17 @@ export const ProductForm = ({
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues: initialData
+        defaultValues: {
+            name: initialData?.name || "",
+            price: initialData?.price || 0,
+            images: initialData?.images || [],
+            isFeatured: initialData?.isFeatured || false,
+            isArchived: initialData?.isArchived || false,
+            category: initialData?.category || "",
+            size: initialData?.size || "",
+            kitchen: initialData?.kitchen || "",
+            cuisine: initialData?.cuisine || "",
+        }
     });
 
     const [isLoading, setIsLoading] = useState(false);
@@ -150,11 +160,11 @@ export const ProductForm = ({
                                     <ImagesUpload
                                         value={(field.value || [])?.map((image) => image.url)}
                                         onChange={(urls) => {
-                                            field.onChange(urls?.map((url) => ({ url })));
+                                            field.onChange(urls.map((url) => ({ url })));
                                         }}
                                         disabled={isLoading}
                                         onRemove={(url) => {
-                                            field.onChange((field?.value || [])?.filter((image) => image.url !== url));
+                                            field.onChange((field?.value || [])?.filter((current) => current.url !== url));
                                         }}
                                     />
                                 </FormControl>
