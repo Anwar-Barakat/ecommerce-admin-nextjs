@@ -2,8 +2,8 @@ import { db } from "@/lib/firebase";
 import { auth } from "@clerk/nextjs/server";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import { redirect } from "next/navigation";
-import { Store } from "@/models/store";
 import Navbar from "@/components/navbar";
+import { Store } from "@/app/models/store";
 
 interface DashboardLayoutProps {
     children: React.ReactNode;
