@@ -109,6 +109,8 @@ export const DELETE = async (
       }
     });
 
+    
+
     // delete orders associated with the store
     const ordersQuerySnapshot = (await getDocs(
       collection(db, `stores/${params.storeId}/orders`)
