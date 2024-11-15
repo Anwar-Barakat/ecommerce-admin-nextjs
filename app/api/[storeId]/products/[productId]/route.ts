@@ -34,7 +34,6 @@ export const PATCH = async (
     const {
       name,
       price,
-      qty,
       images,
       isFeatured,
       isArchived,
@@ -101,7 +100,6 @@ export const PATCH = async (
       isArchived: isArchived || false,
       category,
       size,
-      qty: qty || 0,
       kitchen,
       cuisine,
       createdAt: serverTimestamp(),
