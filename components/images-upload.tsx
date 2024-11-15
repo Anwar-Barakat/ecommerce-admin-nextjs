@@ -35,7 +35,7 @@ export const ImagesUpload = ({ disabled, onChange, onRemove, value }: ImagesUplo
         let completeUploader = 0;
         files.forEach((file: File) => {
             const uploadTask = uploadBytesResumable(
-                ref(storage, `images/${Date.now()}-${file.name}`),
+                ref(storage, `images/products/${Date.now()}-${file.name}`),
                 file,
                 { contentType: file.type }
             );

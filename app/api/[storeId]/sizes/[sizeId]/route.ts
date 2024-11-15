@@ -10,7 +10,7 @@ import {
 } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
-// PATCH: Update a category for the given store
+// PATCH: Update a size for the given store
 export const PATCH = async (
   req: Request,
   {

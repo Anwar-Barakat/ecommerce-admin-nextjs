@@ -11,7 +11,7 @@ import {
 } from "firebase/firestore";
 import { NextResponse } from "next/server";
 
-// GET: Fetch all sizes for the given store
+// GET: Fetch all products for the given store
 export const GET = async (
   req: Request,
   { params }: { params: { storeId: string } }
@@ -21,11 +21,11 @@ export const GET = async (
       return new NextResponse("Store ID is required", { status: 400 });
     }
 
-    const sizeData = (
-      await getDocs(collection(db, "stores", params.storeId, "sizes"))
+    const productData = (
+      await getDocs(collection(db, "stores", params.storeId, "products"))
     ).docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-    return NextResponse.json(sizeData);
+    return NextResponse.json(productData);
   } catch (error) {
     console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
@@ -45,14 +45,33 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const { name, value } = body;
+    const {
+      name,
+      price,
+      qty,
+      images,
+      isFeatured,
+      isArchived,
+      category,
+      size,
+      kitchen,
+      cuisine,
+    } = body;
 
     if (!name) {
       return new NextResponse("Name is required", { status: 400 });
     }
 
-    if (!value) {
-      return new NextResponse("Value is required", { status: 400 });
+    if (!images || images.length === 0) {
+      return new NextResponse("Images are required", { status: 400 });
+    }
+
+    if (!price) {
+      return new NextResponse("Price is required", { status: 400 });
+    }
+
+    if (!category) {
+      return new NextResponse("Category is required", { status: 400 });
     }
 
     if (!params.storeId) {
@@ -70,21 +89,29 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    const sizeData = {
+    const productData = {
       name,
-      value,
+      price,
+      images,
+      isFeatured: isFeatured || false,
+      isArchived: isArchived || false,
+      category,
+      size,
+      qty: qty || 0,
+      kitchen,
+      cuisine,
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     };
 
-    const sizeRef = await addDoc(
-      collection(db, "stores", storeId, "sizes"),
-      sizeData
+    const productRef = await addDoc(
+      collection(db, "stores", storeId, "products"),
+      productData
     );
 
-    await updateDoc(sizeRef, { id: sizeRef.id });
+    await updateDoc(productRef, { id: productRef.id });
 
-    return NextResponse.json({ id: sizeRef.id, ...sizeData });
+    return NextResponse.json({ id: productRef.id, ...productData });
   } catch (error) {
     console.log(error);
     return new NextResponse("Internal Server Error", { status: 500 });
